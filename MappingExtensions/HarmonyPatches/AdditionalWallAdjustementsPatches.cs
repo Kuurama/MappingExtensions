@@ -85,7 +85,7 @@ namespace MappingExtensions.HarmonyPatches
                     new CodeMatch(i => i.opcode == OpCodes.Callvirt && ((MethodBase)i.operand).Name == $"get_{nameof(ObstacleController.width)}"),
                     new CodeMatch(OpCodes.Conv_R4),
                     new CodeMatch())
-                .ThrowIfInvalid()
+                .ThrowIfInvalid("Failed to find the obstacle width call in BeatmapObjectSpawnMovementData.GetObstacleSpawnData")
                 .Insert(Transpilers.EmitDelegate<Func<float, float>>(obstacleWidth =>
                 {
                     if (!Plugin.active || obstacleWidth is < 1000 and > -1000)
@@ -130,8 +130,10 @@ namespace MappingExtensions.HarmonyPatches
                     break;
             }
 
-            obstacleHeight *= StaticBeatmapObjectSpawnMovementData.layerHeight;
-
+            // They inlined StaticBeatmapObjectSpawnMovementData.layerHeight.
+            const float layerHeight = 0.6f;
+            
+            obstacleHeight *= layerHeight;
             obstacleSpawnData = new ObstacleSpawnData(obstacleSpawnData.moveOffset, obstacleSpawnData.obstacleWidth, obstacleHeight);
         }
     }

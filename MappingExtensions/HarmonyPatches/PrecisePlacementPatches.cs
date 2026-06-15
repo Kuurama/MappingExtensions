@@ -85,16 +85,20 @@ namespace MappingExtensions.HarmonyPatches
             {
                 return;
             }
+            
+            // Those two values were removed from StaticBeatmapObjectSpawnMovementData.
+            const float kUpperLinesYPos = 0.85f;
+            const float kTopLinesYPos = 1.45f;
 
-            const float delta = StaticBeatmapObjectSpawnMovementData.kTopLinesYPos - StaticBeatmapObjectSpawnMovementData.kUpperLinesYPos;
+            const float delta = kTopLinesYPos - kUpperLinesYPos;
             var layer = (int)lineLayer;
             if (layer is >= 1000 or <= -1000)
             {
-                __result = StaticBeatmapObjectSpawnMovementData.kUpperLinesYPos - delta - delta + layer * delta / 1000;
+                __result = kUpperLinesYPos - delta - delta + layer * delta / 1000;
             }
             else if (layer is > 2 or < 0)
             {
-                __result = StaticBeatmapObjectSpawnMovementData.kUpperLinesYPos - delta + layer * delta;
+                __result = kUpperLinesYPos - delta + layer * delta;
             }
         }
     }

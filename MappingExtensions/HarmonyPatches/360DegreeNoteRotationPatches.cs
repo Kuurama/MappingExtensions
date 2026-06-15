@@ -78,7 +78,7 @@ namespace MappingExtensions.HarmonyPatches
                 .MatchEndForward(
                     new CodeMatch(OpCodes.Bne_Un),
                     new CodeMatch(OpCodes.Ldarg_0))
-                .ThrowIfInvalid()
+                .ThrowIfInvalid("Failed to find the instruction sequence to patch in ColorNoteVisuals.HandleNoteControllerDidInit.")
                 .CreateLabel(out var destination)
                 .MatchStartBackwards(new CodeMatch(OpCodes.Bne_Un))
                 .InsertAndAdvance(
